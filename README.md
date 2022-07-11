@@ -25,7 +25,7 @@ parancsot, hogy csak a felhasználó tudja olvasni és írni a ~/.ssh/authorized
 chmod 0600 ~/.ssh/authorized_keys
 
 
-widowson az ssh konyvtar: \Users\user\.ssh> 
+widowson az ssh konyvtar: \Users\user\.ssh
 
 Jelentkezzen be a távoli szerverre, és nyissa meg az SSH konfigurációs fájlt:
 
