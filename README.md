@@ -2,7 +2,7 @@
 
         ssh-keygen
 
-# nagyobb bizotnságú key generálása:
+# Nagyobb bizotnságú SSH key generálása:
 
         ssh-keygen -t ed25519 -C " default"
 
@@ -11,18 +11,18 @@
 és állítsa be a megfelelő engedélyeket, fontos hogy ne a  rootnak adjunk ssh jogokat, biztonsági okokból.
 De a user legyen sudoer.
 
-        mkdir -p ~/.sshchmod 0700 ~/.ssh
+       sudo mkdir -p ~/.sshchmod 0700 ~/.ssh
 
 - Nyisson meg egy szövegszerkesztőt
 és illessze be a 4. lépésben a kulcspár generálásakor másolt nyilvános kulcsot a:
 
-        nano ~/.ssh/authorized_keys
+        sudo nano ~/.ssh/authorized_keys
         
 - A teljes nyilvános kulcs szövegének egyetlen sorban kell lennie
 
 - Futtassa a következőt chmod parancsot, hogy csak a felhasználó tudja olvasni és írni:
 
-        chmod 0600 ~/.ssh/authorized_keys
+        sudo chmod 0600 ~/.ssh/authorized_keys
 
 - Widowson az ssh konyvtar: c: \Users\user\.ssh
 - vagy c: ~\.ssh
@@ -31,16 +31,19 @@ De a user legyen sudoer.
 
         sudo nano /etc/ssh/sshd_config
 
-Keresse meg a következő direktívákat, és módosítsa az alábbiak szerint:
+
 
 #SSH Tesztelése
 
 - SSH kapcsolat lebontása. Ujra kapcsolodás ha nem kér jelszót akkor rendben van
 
-# Kapcsolat és SSH Biztonságossá tétele
+# Kapcsolat és SSH Biztonságossá tétele:
 
-        /etc/ssh/sshd_config
+Az alábbiakat máésold be és ha valami már egyszer szerepel a configban azt csak töröld ki:
 
+        sudo nano /etc/ssh/sshd_config
+        
+# Security:
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM no
@@ -49,36 +52,34 @@ Ha elkészült, mentse el a fájlt, és indítsa újra az SSH szolgáltatást a 
 
 sudo systemctl restart ssh
 
-Ezen a ponton a jelszó alapú hitelesítés le van tiltva.
+Ezen a ponton a jelszó alapú hitelesítés le van tiltva, megszünik a root bejelentlezés. Alapból a rendszer biztonságossá válik. 
 
 
 
 # Miért kell letiltanunk a root bejelentkezést SSH-n keresztül?
 
+- Az alábbi cikk tartalmazza miért fontos a fentiek betartása a leírtakat már elvégezted fent nem kell újra.
 
-Adminisztráció Biztonság 
+# Adminisztráció Biztonság 
 
-1. Áttekintés
+# 1. Áttekintés
 
-Linux rendszergazdákként azt tanítják nekünk, hogy nagyon rossz gyakorlat és biztonsági hiba az SSH . De pontosan mi teszi ezt rossz gyakorlattá?
-
+- Linux rendszergazdákként azt tanítják nekünk, hogy nagyon rossz gyakorlat és biztonsági hiba az SSH . De pontosan mi teszi ezt rossz gyakorlattá?
 Ebben az oktatóanyagban először elmagyarázzuk, miért jelent biztonsági problémát az SSH-n keresztüli root-bejelentkezés engedélyezése. Ezen ismeretek birtokában bemutatunk néhány bevált gyakorlatot.
-2. A Rossz
 
-A gyökér a szuperfelhasználói fiók Unix és Linux alapú rendszerekben. Miután elértük a root fiókot, teljes rendszerhozzáféréssel rendelkezünk. Mivel a felhasználónév mindig root, és a hozzáférési jogok korlátlanok, ez a fiók a legértékesebb célpont a hackerek számára.
+# 2. A Rossz
 
-Nagyon sok bot keresi az internetet szabad SSH-portokkal rendelkező rendszerek után. Amikor találnak egyet, megpróbálnak bejelentkezni a szokásos felhasználónevekkel, és megpróbálják kitalálni a jelszót.
+- A gyökér a szuperfelhasználói fiók Unix és Linux alapú rendszerekben. Miután elértük a root fiókot, teljes rendszerhozzáféréssel rendelkezünk. Mivel a felhasználónév mindig root, és a hozzáférési jogok korlátlanok, ez a fiók a legértékesebb célpont a hackerek számára.
+- Nagyon sok bot keresi az internetet szabad SSH-portokkal rendelkező rendszerek után. Amikor találnak egyet, megpróbálnak bejelentkezni a szokásos felhasználónevekkel, és megpróbálják kitalálni a jelszót.
+- Képzelje el, hogy egy botnak szerencséje van, és kitalálja a root jelszót. Mivel a root hozzáférést biztosít az egész géphez, a gépet jelenleg elveszettnek kell tekinteni.
+- A hatás sokkal kisebb lett volna, ha a feltört felhasználó jogosultság nélküli hozzáféréssel rendelkezik. Ekkor a jogsértést feloldják, és csak erre a felhasználóra korlátozzák.
+- Vegye figyelembe, hogy a root nem az egyetlen gyakori felhasználónév. Ugyanez vonatkozik az olyan alkalmazások egyéb gyakori felhasználóneveire, mint az Apache , MySQL stb.
 
-Képzelje el, hogy egy botnak szerencséje van, és kitalálja a root jelszót. Mivel a root hozzáférést biztosít az egész géphez, a gépet jelenleg elveszettnek kell tekinteni.
-freestar
-
-A hatás sokkal kisebb lett volna, ha a feltört felhasználó jogosultság nélküli hozzáféréssel rendelkezik. Ekkor a jogsértést feloldják, és csak erre a felhasználóra korlátozzák.
-
-Vegye figyelembe, hogy a root nem az egyetlen gyakori felhasználónév. Ugyanez vonatkozik az olyan alkalmazások egyéb gyakori felhasználóneveire, mint az Apache , MySQL stb.
-3. A legjobb gyakorlatok
+# 3. A legjobb gyakorlatok
 
 Most, hogy tudjuk, hogy rossz az SSH-n keresztüli root bejelentkezés engedélyezése, ideje néhány mérést végezni. Nézzünk meg néhány bevált gyakorlatot.
-3.1. Root SSH letiltása
+
+# 3.1. Root SSH letiltása
 
 Először is letiltjuk az SSH root bejelentkezéseket. Ezt az SSH démon konfigurációjának szerkesztésével tehetjük meg, amely általában az /etc/ssh/sshd_config fájlban található. Meg kell győződnünk arról, hogy tartalmazza a következő sort:
 
