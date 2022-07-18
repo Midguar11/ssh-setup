@@ -1,4 +1,4 @@
-# SSh generálása:
+# SSh generálása és másolása
 
         ssh-keygen
 
@@ -7,33 +7,39 @@
         ssh-keygen -t ed25519 -C " default"
 
 
-Ha a felhasználói SSH-könyvtár nem létezik, hozza létre a mkdir
-és állítsa be a megfelelő engedélyeket:
+- Ha a felhasználói SSH-könyvtár nem létezik, hozza létre a mkdir
+és állítsa be a megfelelő engedélyeket, fontos hogy ne a  rootnak adjunk ssh jogokat, biztonsági okokból.
+De a user legyen sudoer.
 
-mkdir -p ~/.sshchmod 0700 ~/.ssh
+        mkdir -p ~/.sshchmod 0700 ~/.ssh
 
-Nyisson meg egy szövegszerkesztőt
-és illessze be a 4. lépésben a kulcspár generálásakor másolt nyilvános kulcsot a ~/.ssh/authorized_keys:
+- Nyisson meg egy szövegszerkesztőt
+és illessze be a 4. lépésben a kulcspár generálásakor másolt nyilvános kulcsot a:
 
-nano ~/.ssh/authorized_keys
+        nano ~/.ssh/authorized_keys
+        
+- A teljes nyilvános kulcs szövegének egyetlen sorban kell lennie
 
-A teljes nyilvános kulcs szövegének egyetlen sorban kell lennie.
+- Futtassa a következőt chmod parancsot, hogy csak a felhasználó tudja olvasni és írni:
 
-Futtassa a következőt chmod
-parancsot, hogy csak a felhasználó tudja olvasni és írni a ~/.ssh/authorized_keys:
+        chmod 0600 ~/.ssh/authorized_keys
 
-chmod 0600 ~/.ssh/authorized_keys
+- Widowson az ssh konyvtar: c: \Users\user\.ssh
+- vagy c: ~\.ssh
 
+- Jelentkezzen be a távoli szerverre, és nyissa meg az SSH konfigurációs fájlt:
 
-widowson az ssh konyvtar: \Users\user\.ssh
-
-Jelentkezzen be a távoli szerverre, és nyissa meg az SSH konfigurációs fájlt:
-
-sudo nano /etc/ssh/sshd_config
+        sudo nano /etc/ssh/sshd_config
 
 Keresse meg a következő direktívákat, és módosítsa az alábbiak szerint:
 
-/etc/ssh/sshd_config
+#SSH Tesztelése
+
+- SSH kapcsolat lebontása. Ujra kapcsolodás ha nem kér jelszót akkor rendben van
+
+# Kapcsolat és SSH Biztonságossá tétele
+
+        /etc/ssh/sshd_config
 
 PasswordAuthentication no
 ChallengeResponseAuthentication no
