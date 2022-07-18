@@ -1,10 +1,10 @@
-SSh generálása:
+# SSh generálása:
 
-ssh-keygen
+        ssh-keygen
 
-nagyobb bizotnságú key generálása:
+# nagyobb bizotnságú key generálása:
 
-ssh-keygen -t ed25519 -C " default"
+        ssh-keygen -t ed25519 -C " default"
 
 
 Ha a felhasználói SSH-könyvtár nem létezik, hozza létre a mkdir
