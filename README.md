@@ -7,6 +7,8 @@
         ssh-keygen -t ed25519 -C " default"
 
 
+# Írásjogok beállítása
+
 - Ha a felhasználói SSH-könyvtár nem létezik, hozza létre a mkdir
 és állítsa be a megfelelő engedélyeket, fontos hogy ne a  rootnak adjunk ssh jogokat, biztonsági okokból.
 De a user legyen sudoer.
