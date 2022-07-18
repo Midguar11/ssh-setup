@@ -55,7 +55,7 @@ Az alábbiakat másold be és ha valami már egyszer szerepel a configban azt cs
 
 Ha elkészült, mentse el a fájlt, és indítsa újra az SSH szolgáltatást a következő beírásával:
 
-sudo systemctl restart ssh
+        sudo systemctl restart ssh
 
 Ezen a ponton a jelszó alapú hitelesítés le van tiltva, megszünik a root bejelentlezés. Alapból a rendszer biztonságossá válik. 
 
