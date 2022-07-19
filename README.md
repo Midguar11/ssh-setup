@@ -1,10 +1,15 @@
-# SSh generálása és másolása
+# SSh generálása
 
         ssh-keygen
 
 # Nagyobb bizotnságú SSH key generálása:
 
         ssh-keygen -t ed25519 -C " default"
+
+# Használád az Ansible playbookot a folyamathoz ami aláb következik,ez csak egy áttekintés a továbbiakban
+
+git@github.com:Midguar11/Ansible_Install_and_setup_on_my_home_lab.git
+
 
 
 # Írásjogok beállítása
