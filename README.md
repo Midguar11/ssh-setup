@@ -13,7 +13,7 @@
 és állítsa be a megfelelő engedélyeket, fontos hogy ne a  rootnak adjunk ssh jogokat, biztonsági okokból.
 De a user legyen sudoer.
 
-       sudo mkdir -p ~/.sshchmod 0700 ~/.ssh
+       sudo mkdir -p ~/.ssh chmod 0700 ~/.ssh
 
 - Nyisson meg egy szövegszerkesztőt
 és illessze be a 4. lépésben a kulcspár generálásakor másolt nyilvános kulcsot a:
